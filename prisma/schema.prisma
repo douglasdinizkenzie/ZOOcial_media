@@ -11,29 +11,33 @@ datasource db {
 }
 
 model User {
-  uuid       String         @id @default(uuid())
-  name       String         @db.VarChar(100)
-  image      String?        @db.VarChar(255)
-  email      String         @db.VarChar(255)
-  password   String         @db.VarChar(255)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime?      @updatedAt
-  posts      Post[]
-  comments   PostComments[]
-  postsLiked PostLikes[]
-  followers  Followers[]
+  uuid              String         @id @default(uuid())
+  name              String         @db.VarChar(100)
+  image             String?        @db.VarChar(255)
+  email             String         @db.VarChar(255)
+  password          String         @db.VarChar(255)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime?      @updatedAt
+  postsQuantity     Int            @default(0) @db.Integer
+  followersQuantity Int            @default(0) @db.Integer
+  posts             Post[]
+  comments          PostComments[]
+  postsLiked        PostLikes[]
+  followers         Followers[]
 
   @@map("user")
 }
 
 model Post {
-  uuid        String         @id @default(uuid())
-  post        String         @db.Text()
-  image       String         @db.VarChar(255)
-  author      User           @relation(fields: [author_uuid], references: [uuid], onDelete: Cascade)
-  author_uuid String
-  comments    PostComments[]
-  likes       PostLikes[]
+  uuid             String         @id @default(uuid())
+  post             String         @db.Text()
+  image            String         @db.VarChar(255)
+  author           User           @relation(fields: [author_uuid], references: [uuid], onDelete: Cascade)
+  author_uuid      String
+  commentsQuantity Int            @default(0) @db.Integer
+  likesQuantity    Int            @default(0) @db.Integer
+  comments         PostComments[]
+  likes            PostLikes[]
 
   @@map("post")
 }
