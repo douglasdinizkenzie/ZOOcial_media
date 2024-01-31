@@ -9,3 +9,60 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  uuid       String         @id @default(uuid())
+  name       String         @db.VarChar(100)
+  image      String?        @db.VarChar(255)
+  email      String         @db.VarChar(255)
+  password   String         @db.VarChar(255)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime?      @updatedAt
+  posts      Post[]
+  comments   PostComments[]
+  postsLiked PostLikes[]
+  followers  Followers[]
+
+  @@map("user")
+}
+
+model Post {
+  uuid        String         @id @default(uuid())
+  post        String         @db.Text()
+  image       String         @db.VarChar(255)
+  author      User           @relation(fields: [author_uuid], references: [uuid], onDelete: Cascade)
+  author_uuid String
+  comments    PostComments[]
+  likes       PostLikes[]
+
+  @@map("post")
+}
+
+model PostComments {
+  uuid        String @id @default(uuid())
+  comment     String @db.Text()
+  author      User   @relation(fields: [author_uuid], references: [uuid], onDelete: Cascade)
+  author_uuid String
+  post        Post   @relation(fields: [post_uuid], references: [uuid], onDelete: Cascade)
+  post_uuid   String
+
+  @@map("post_comments")
+}
+
+model PostLikes {
+  uuid        String @id @default(uuid())
+  author      User   @relation(fields: [author_uuid], references: [uuid], onDelete: Cascade)
+  author_uuid String
+  post        Post   @relation(fields: [post_uuid], references: [uuid], onDelete: Cascade)
+  post_uuid   String
+
+  @@map("post_likes")
+}
+
+model Followers {
+  uuid          String @id @default(uuid())
+  follower      User   @relation(fields: [follower_uuid], references: [uuid], onDelete: Cascade)
+  follower_uuid String
+
+  @@map("followers")
+}
