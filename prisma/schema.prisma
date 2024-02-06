@@ -20,14 +20,16 @@ model User {
   updatedAt         DateTime?      @updatedAt
   postsQuantity     Int            @default(0) @db.Integer
   followersQuantity Int            @default(0) @db.Integer
+  followingQuantity Int            @default(0) @db.Integer
   posts             Post[]
   comments          PostComments[]
   postsLiked        PostLikes[]
-  followers         Followers[]
+  followers         Followers[]   @relation("follower") 
+  following         Followers[]   @relation("following") 
+
 
   @@map("user")
 }
-
 model Post {
   uuid             String         @id @default(uuid())
   post             String         @db.Text()
@@ -64,9 +66,11 @@ model PostLikes {
 }
 
 model Followers {
-  uuid          String @id @default(uuid())
-  follower      User   @relation(fields: [follower_uuid], references: [uuid], onDelete: Cascade)
-  follower_uuid String
+  uuid           String @id @default(uuid())
+  follower       User   @relation( "follower", fields: [follower_uuid], references: [uuid], onDelete: Cascade)
+  follower_uuid  String
+  followed       User   @relation( "following", fields: [followed_uuid], references: [uuid], onDelete: Cascade)
+  followed_uuid  String
 
   @@map("followers")
 }
