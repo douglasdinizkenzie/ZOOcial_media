@@ -9,6 +9,7 @@ export const userSchema = z.object({
     createdAt: z.date().nullish(),
     updatedAt: z.date().nullish(),
     followersQuantity: z.number(),
+    followingQuantity: z.number(),
     postsQuantity: z.number()
 })
 
@@ -18,7 +19,8 @@ export const userSchemaRequest = userSchema.omit({
     createdAt: true,
     updatedAt: true,
     followersQuantity: true,
-    postsQuantity: true
+    postsQuantity: true,
+    followingQuantity: true
 })
 
 
