@@ -28,4 +28,8 @@ export const userSchemaResponse = userSchema.omit({
     password: true,
 })
 
+export const userSchemaRequestUpdate = userSchemaRequest.omit({
+    password: true
+}).partial()
+
 export const userSchemaResponseArray = userSchemaResponse.array()
