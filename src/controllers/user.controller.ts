@@ -1,9 +1,10 @@
-import {  userRequestInterface, userResponseArrayInterface, userResponseInterface } from "../interfaces/user.interfaces"
+import {  userRequestInterface, userRequestUpdate, userResponseArrayInterface, userResponseInterface } from "../interfaces/user.interfaces"
 import { Request, Response } from "express"
 import { createUserService } from "../services/user/createUser.service"
 import { listAllUsersService } from "../services/user/listAllUsers.service"
 import { listUserService } from "../services/user/listUser.service"
 import { deleteOwnAccountService } from "../services/user/deleteOwnAccount.service"
+import { updateUserService } from "../services/user/updateUser.service"
 
 export const createUserController = async (req:Request, res:Response):Promise<Response> => {
         const data: userRequestInterface = req.body
@@ -39,4 +40,15 @@ export const deleteOwnAccount = async (req:Request, res:Response):Promise<Respon
 
 
         return res.status(204).json()
+}
+
+
+export const updateUserController = async(req:Request, res:Response):Promise<Response> => {
+        const data: userRequestUpdate = req.body
+        const userUUID: string = res.locals.userUUID
+
+        const userUpdated: userResponseInterface = await updateUserService(data, userUUID)
+
+        return res.status(200).json(userUpdated)
+
 }

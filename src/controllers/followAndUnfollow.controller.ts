@@ -5,7 +5,6 @@ export const followAndUnfollowController = async (req:Request, res:Response)=> {
     const userUUID: string = res.locals.userUUID
     const userToFollowOrUnfollow: string = req.params.uuid
 
-    console.log(userUUID, userToFollowOrUnfollow)
 
     const followedOfUnfollowed = await followAndUnfollowService(userUUID, userToFollowOrUnfollow)
 
